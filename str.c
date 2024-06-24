@@ -31,6 +31,7 @@
 #include <math.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 
 #include "str.h"
 #include "logger_common.h"
@@ -312,7 +313,7 @@ size_t uint_to_char_pad_zero(uint8_t f, char *str) {
     MSTRF(xultoa);
 }
 
-size_t time_to_char_hm(uint8_t h, uint8_t m, char *str) {
+size_t time_to_char_hm(int16_t h, int16_t m, char *str) {
     char *p = str;
     for(uint8_t i=0;i<2;++i){
         if(i>0) *p++ = ':';
@@ -330,7 +331,7 @@ size_t time_to_char_hms(uint8_t h, uint8_t m, uint8_t s, char *str) {
     return p-str;
 }
 
-size_t date_to_char(uint8_t d, uint8_t m, uint16_t y, uint8_t format, char *str) {
+size_t date_to_char(int16_t d, int16_t m, int16_t y, uint8_t format, char *str) {
     char *p = str;
     uint16_t t;
     char separator = (format==1) ? '-' : '.';
@@ -416,9 +417,9 @@ size_t f_to_char_f(double f, char *str, uint8_t fractionlen, uint8_t padlen) {
         }
         len += uint_to_char(frac, p);
     }
-    printf("f_to_char_f converted, orig:%.03f formatted:%s\n", f, str);
-    if (len>5 && f < 100)
-    printf("nop -----------------------------------------------------------\n");
+    // printf("f_to_char_f converted, orig:%.03f formatted:%s\n", f, str);
+    // if (len>5 && f < 100)
+    // printf("nop -----------------------------------------------------------\n");
     return len;
 }
 
