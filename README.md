@@ -1,4 +1,4 @@
-# strbf Module
+# str Module
 
 This module provides a string buffer (`strbf`) functionality. It allows you to create a buffer, append strings to it, retrieve its contents, and clear it when done.
 
