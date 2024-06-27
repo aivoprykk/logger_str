@@ -1,0 +1,6 @@
+dependencies:
+  idf:
+    version: '>=5.0'
+description: String helpers component for ESP-IDF
+url: https://github.com/aivoprykk/logger_str.git
+version: 0.1.0
