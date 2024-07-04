@@ -339,11 +339,14 @@ size_t date_to_char(int16_t d, int16_t m, int16_t y, uint8_t format, char *str) 
         if(format==1)
             t = (i == 0) ? y : (i == 1) ? m : d;
         else
-            t = (i == 0) ? m : (i == 1) ? d : y;
+            t = (i == 0) ? d : (i == 1) ? m : y;
         if(i>0) *p++ = separator;
-        if(t>99 && t<1900){ p+=uint_to_char(t+1900, p); }
-        else if(t<10){ p+=uint_to_char_pad_zero(t, p); }        
-        
+        if((format==1 && i==0) || (format==0 && i==2)) { // year
+            if(!t) memcpy(p, "0000", 4), p+=4;
+            else p+=uint_to_char((t>99 && t<=1900) ? t+1900 : t, p);
+        }
+        else if(t<10) p+=uint_to_char_pad_zero(t, p);
+        else p+=uint_to_char(t, p);        
     }
     return p-str;
 }
