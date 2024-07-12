@@ -441,3 +441,37 @@ size_t f2_to_char(double f, char *str) {
 size_t f3_to_char(double f, char *str) {
     return f_to_char(f, str, 3);
 }
+
+size_t concat(char *dst, size_t dlen, const char *src, size_t len) {
+    memcpy(dst+dlen, src, len);
+    dlen+=len;
+    dst[dlen] = 0;
+    return dlen;
+}
+
+size_t sec_to_hms_str(uint32_t sec, char *str)
+{
+    uint16_t h = sec / 3600;
+    uint16_t m = (sec / 60) % 60;
+    uint16_t s = sec % 60;
+    char *p = str;
+    size_t len = 8;
+    memcpy(p, "00:00:00", len), *(p+len)=0;
+    printf ("sec_to_hms_str: %d %d %d\n", h, m, s);
+    if(h>0){
+        if(h<10) ++p;
+        p += xultoa(h, p), *p=':';
+    }
+    if(m>0){
+        p = str+(len-5);
+        if(m<10) ++p;
+        p += xultoa(m, p), *p=':';
+    }
+    if(s>0){
+        p = str+(len-2);
+        if(s<10) ++p;
+        p += xultoa(s, p);
+    }
+    printf ("sec_to_hms_str: %s\n", str);
+    return len;
+}
