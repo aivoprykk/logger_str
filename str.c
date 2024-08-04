@@ -457,7 +457,7 @@ size_t sec_to_hms_str(uint32_t sec, char *str)
     char *p = str;
     size_t len = 8;
     memcpy(p, "00:00:00", len), *(p+len)=0;
-    printf ("sec_to_hms_str: %d %d %d\n", h, m, s);
+    // printf ("sec_to_hms_str: %d %d %d\n", h, m, s);
     if(h>0){
         if(h<10) ++p;
         p += xultoa(h, p), *p=':';
@@ -472,6 +472,6 @@ size_t sec_to_hms_str(uint32_t sec, char *str)
         if(s<10) ++p;
         p += xultoa(s, p);
     }
-    printf ("sec_to_hms_str: %s\n", str);
+    // printf ("sec_to_hms_str: %s\n", str);
     return len;
 }
