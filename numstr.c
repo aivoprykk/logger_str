@@ -1,40 +1,12 @@
-/**
- *  stm32tpl --  STM32 C++ Template Peripheral Library
- *  Visit https://github.com/antongus/stm32tpl for new versions
- *
- *  Copyright (c) 2011-2020 Anton B. Gusev aka AHTOXA
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
- *
- *
- *  file         : ftoa.c
- *  description  : convert double to string
- *
- */
-
 #include <math.h>
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
 
-#include "str.h"
+#include "numstr.h"
+#if defined(ESP_PLATFORM)
 #include "logger_common.h"
+#endif
 
 #define MAX_PRECISION (10)
 static const double rounders[MAX_PRECISION + 1] = {
@@ -57,8 +29,8 @@ static const char digits[201] = "0001020304050607080910111213141516171819"
                                 "6061626364656667686970717273747576777879"
                                 "8081828384858687888990919293949596979899";
 
-long xint_len(int32_t value) {
-    int l = !value;
+size_t xint_len(size_t value) {
+    size_t l = !value;
     while (value) {
         l++;
         value /= 10;
@@ -155,11 +127,11 @@ char *xftoa(double f, char *buf, int precision) {
     return buf;
 }
 
-size_t xultoa(uint32_t value, char *dst) {
+size_t xultoa(unsigned long value, char *dst) {
     assert(dst);
     size_t length = xint_len(value);
     size_t next = length - 1;
-    uint32_t i = 0;
+    unsigned long i = 0;
     while (value >= 100) {
         i = (value % 100) * 2;
         value /= 100;
@@ -178,11 +150,11 @@ size_t xultoa(uint32_t value, char *dst) {
     return length;
 }
 
-size_t xltoa(int32_t value, char *dst) {
+size_t xltoa(long value, char *dst) {
     assert(dst);
     size_t length = xint_len(value);
     size_t next = length - 1;
-    int32_t i = 0;
+    unsigned long i = 0;
     if (value < 0) {
         value = -value;
         length++;
@@ -324,7 +296,6 @@ size_t time_to_char_hm(int16_t h, int16_t m, char *str) {
 
 size_t time_to_char_hms(uint8_t h, uint8_t m, uint8_t s, char *str) {
     char *p = str;
-    uint8_t t;
     p+=time_to_char_hm(h, m, p);
     *p++ = ':';
     p+=uint_to_char_pad_zero(s, p);

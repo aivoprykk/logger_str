@@ -348,7 +348,7 @@ extern "C" {
      * @param sb - pointer to string buffer
      * @return pointer to string buffer
      * */
-    char *strbf_finish(SB *sb);
+    char *strbf_finish(const SB *sb);
 
     /**
      * @brief Finish url buffer, end string with '\0'

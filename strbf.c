@@ -4,8 +4,13 @@
 #include <stdarg.h>
 
 #include "strbf.h"
+#include "numstr.h"
+#if defined(ESP_PLATFORM)
 #include "logger_common.h"
-#include "str.h"
+#else
+#include <assert.h>
+#include <stdio.h>
+#endif
 
 #define isset(x) (x)
 #define is_spacing(x) (*(x) == ' ' || *(x) == '\t' || *(x) == '\r' || *(x) == '\n')
@@ -146,9 +151,9 @@ void strbf_putl(SB *sb, long val) {
   strbf_put(sb, p, len);
 }
 
-void strbf_putul(SB *sb, unsigned long val) {
+void strbf_putul(SB *sb, uint32_t val) {
   char i[16] = {0}, *p = i;
-  size_t len = xltoa(val, p);
+  size_t len = xultoa(val, p);
   strbf_put(sb, p, len);
 }
 
@@ -450,7 +455,7 @@ void strbf_trim(SB *sb) {
   assert(sb && sb->start);
   if (sb->start) {
     // Right trim
-    while (sb->cur && is_spacing((sb->cur - 1))) {
+    while (sb->cur>sb->start && is_spacing((sb->cur - 1))) {
       --sb->cur;
     }
     // Left trim
@@ -464,7 +469,7 @@ void strbf_trim(SB *sb) {
   }
 }
 
-char *strbf_finish(SB *sb) {
+char *strbf_finish(const SB *sb) {
   assert(sb && sb->start);
   *sb->cur = 0;
   assert(sb->start <= sb->cur && strlen(sb->start) == (size_t)(sb->cur - sb->start));
