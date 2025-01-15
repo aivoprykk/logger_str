@@ -499,6 +499,9 @@ char *strbf_cur(SB *sb) {
 void strbf_free(SB *sb) {
   if (sb && sb->start && !sb->max)
     free(sb->start);
+    sb->start = 0;
+    sb->cur = 0;
+    sb->end = 0;
 }
 
 #undef SB
