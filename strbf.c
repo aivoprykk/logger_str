@@ -497,11 +497,13 @@ char *strbf_cur(SB *sb) {
 }
 
 void strbf_free(SB *sb) {
-  if (sb && sb->start && !sb->max)
+  if(!sb || sb->max) return;
+  if (sb->start) {
     free(sb->start);
     sb->start = 0;
-    sb->cur = 0;
-    sb->end = 0;
+  }
+  sb->cur = 0;
+  sb->end = 0;
 }
 
 #undef SB
